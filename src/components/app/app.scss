@@ -1,0 +1,119 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+}
+
+%button {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    border: none;
+    padding: 0;
+    background: none;
+    border-top: 1px solid #777;
+    border-right: 1px solid #666;
+    font-size: 2.25em;
+}
+
+%operation_active {
+    color: rgba(247,126,27,1);
+    background: white;
+}
+
+%background {
+    background: #e0e0e7;
+}
+
+.calculator {
+    width: 320px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0px 0px 20px 0px #aaa;
+
+    &_display {
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        text-align: right;
+        font-size: 3.25em;
+        color: white;
+        background: #1c191c;
+        padding: 0 .5em;
+    }
+
+    &_keypad {
+        width: 100%;
+        display: grid;
+        grid-template-columns:  3fr 1fr;
+        grid-template-rows: 80px 80px 80px 80px 80px;
+    }
+
+    &_input_keys {
+        display: grid;
+        grid-template-columns:  1fr;
+        grid-template-rows: 80px 80px 80px 80px 80px;
+
+        .function-keys {
+            display: grid;
+            grid-template-columns:  1fr 1fr 1fr;
+            grid-template-rows: 80px;
+
+            button {
+                @extend %button;
+                //background: linear-gradient(to bottom, rgba(202,202,204,1) 0%, rgba(196,194,204,1) 100%);
+            }
+        }
+
+        .digit {
+            &-keys {
+                display: grid;
+                grid-template-columns:  1fr 1fr 1fr;
+                grid-template-rows: 80px 80px 80px 80px;
+
+                button {
+                    @extend %button;
+                    @extend %background;
+
+                    &.span {
+                        &-2 {
+                            grid-column: span 2;
+                            width: 100%;
+                            text-align: left;
+                            padding-left: .8em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &_operator-keys {
+        display: grid;
+        grid-template-columns:  1fr;
+        grid-template-rows: 80px 80px 80px 80px 80px;
+
+        button {
+            @extend %button;
+            background: linear-gradient(to bottom, rgba(252,156,23,1) 0%, rgba(247,126,27,1) 100%);
+            color: white;
+            border-right: none;
+
+            &:active {
+                @extend %operation_active;
+            }
+
+            .active {
+                @extend %operation_active;
+            }
+        }
+    }
+
+}
