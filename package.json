@@ -1,7 +1,7 @@
 {
-    "name": "calculator",
+    "name": "csv2json",
     "version": "1.0.0",
-    "description": "Calculator",
+    "description": "csv2json",
     "private": true,
     "main": "index.js",
     "scripts": {
