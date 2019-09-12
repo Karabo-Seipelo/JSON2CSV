@@ -5,16 +5,26 @@ import './app.scss';
 const App = () => {
     const [ inputFormat, setInputFormat ] = useState();
     const [ outputFormat, setOutputFormat ] = useState();
+    const [ errorMessage, setErrorMessage ] = useState();
 
     const onChangeHandler = (event) => {
         setInputFormat(event.target.value);
     }
 
-    const onClickHandler = () => {
+    const onConvertHandler = () => {
         if (isValidJson(inputFormat)) {
             let output = JSON.parse(inputFormat);
             setOutputFormat(json2csv(output));
+        } else if (inputFormat === undefined | inputFormat === null) {
+            setErrorMessage('Please enter json value');
+        } else {
+            setErrorMessage('Please enter valid json');
         }
+    }
+
+    const onClearHandler = () => {
+        setInputFormat("");
+        setOutputFormat("");
     }
 
     const isValidJson  = (json) => {
@@ -33,25 +43,30 @@ const App = () => {
 
        for(; i < json.length; i++) {
 
-           if(!keys) {
-               keys += `${Object.keys(json[i]).toString()}\r\n`;
+           if (!keys) {
+               keys += `${Object.keys(json[i]).map(value => `"${value}"`).toString()}\r\n`;
            }
 
-           lines += `${Object.values(json[i]).toString()}\r\n`;
+           lines += `${Object.values(json[i]).map(value => `"${value}"`).toString()}\r\n`;
        }
 
        return `${keys}${lines}`;
     }
 
+
     return (
         <div className="container">
+            <div className="error">
+                {errorMessage}
+            </div>
             <div className="input-format">
                 <textarea onChange={(event) => {
-                    onChangeHandler(event, )
-                }}></textarea>
+                    onChangeHandler(event)
+                }} value={inputFormat}></textarea>
             </div>
             <div className="controls">
-                <button onClick={onClickHandler}>Convert</button>
+                <button onClick={onConvertHandler}>Convert</button>
+                <button onClick={onClearHandler}>Clear</button>
             </div>
             <div className="input-format">
             <textarea value={outputFormat}></textarea>

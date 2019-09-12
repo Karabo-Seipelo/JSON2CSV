@@ -16,7 +16,12 @@ body {
     min-height: 50vh;
     display: grid;
     grid-template-columns: 2fr 1fr 2fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: 40px 1fr;
+
+    .error {
+        grid-column: span 3;
+    }
+
     .input {
         &-format {
             textarea {
