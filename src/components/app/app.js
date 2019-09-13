@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './app.scss';
 import { readFile } from 'fs';
+import { saveSnapshotFile } from 'jest-snapshot/build/utils';
 
 const App = () => {
     const [ inputFormat, setInputFormat ] = useState();
@@ -34,6 +35,16 @@ const App = () => {
         reader.readAsText(file);
     }
 
+    const onDownloadHandler = (content) => {
+        const fileName = 'json2csv.csv';
+        const blob = new Blob([content], {
+            type: 'text/csv;charset=utf-8;'
+        });
+        const file = document.createElement('a');
+        file.href = URL.createObjectURL(blob);
+        file.download = fileName;
+        file.click();
+    }
 
     const onClearHandler = () => {
         setInputFormat("");
@@ -86,6 +97,11 @@ const App = () => {
                 </div>
                 <div>
                 <input type="file" onChange={onUploadHandler} name="Upload" />
+                </div>
+                <div>
+                    <button onClick={() => {
+                        onDownloadHandler(outputFormat)
+                    }} >Download</button>
                 </div>
             </div>
             <div className="input-format">
