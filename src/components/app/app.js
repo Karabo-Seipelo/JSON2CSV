@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import './app.scss';
+import { readFile } from 'fs';
+import { saveSnapshotFile } from 'jest-snapshot/build/utils';
 
 const App = () => {
     const [ inputFormat, setInputFormat ] = useState();
@@ -20,6 +22,28 @@ const App = () => {
         } else {
             setErrorMessage('Please enter valid json');
         }
+    }
+
+    const onUploadHandler = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("loadend", (event) => {
+            setInputFormat(event.target.result);
+        });
+
+        reader.readAsText(file);
+    }
+
+    const onDownloadHandler = (content) => {
+        const fileName = 'json2csv.csv';
+        const blob = new Blob([content], {
+            type: 'text/csv;charset=utf-8;'
+        });
+        const file = document.createElement('a');
+        file.href = URL.createObjectURL(blob);
+        file.download = fileName;
+        file.click();
     }
 
     const onClearHandler = () => {
@@ -50,7 +74,7 @@ const App = () => {
            lines += `${Object.values(json[i]).map(value => `"${value}"`).toString()}\r\n`;
        }
 
-       return `${keys}${lines}`;
+       return `${lines}`;
     }
 
 
@@ -65,8 +89,20 @@ const App = () => {
                 }} value={inputFormat}></textarea>
             </div>
             <div className="controls">
-                <button onClick={onConvertHandler}>Convert</button>
+                <div>
+                    <button onClick={onConvertHandler}>Convert</button>
+                    </div>
+                <div>
                 <button onClick={onClearHandler}>Clear</button>
+                </div>
+                <div>
+                <input type="file" onChange={onUploadHandler} name="Upload" />
+                </div>
+                <div>
+                    <button onClick={() => {
+                        onDownloadHandler(outputFormat)
+                    }} >Download</button>
+                </div>
             </div>
             <div className="input-format">
             <textarea value={outputFormat}></textarea>
