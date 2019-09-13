@@ -20,6 +20,8 @@ body {
 
     .error {
         grid-column: span 3;
+        text-align: center;
+        line-height: 40px;
     }
 
     .input {
@@ -28,6 +30,12 @@ body {
                 width: 100%;
                 height: 100%;
             }
+        }
+    }
+
+    .controls {
+        div {
+            padding: .5em;
         }
     }
 }

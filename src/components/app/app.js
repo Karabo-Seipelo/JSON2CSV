@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import './app.scss';
+import { readFile } from 'fs';
 
 const App = () => {
     const [ inputFormat, setInputFormat ] = useState();
@@ -21,6 +22,18 @@ const App = () => {
             setErrorMessage('Please enter valid json');
         }
     }
+
+    const onUploadHandler = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("loadend", (event) => {
+            setInputFormat(event.target.result);
+        });
+
+        reader.readAsText(file);
+    }
+
 
     const onClearHandler = () => {
         setInputFormat("");
@@ -50,7 +63,7 @@ const App = () => {
            lines += `${Object.values(json[i]).map(value => `"${value}"`).toString()}\r\n`;
        }
 
-       return `${keys}${lines}`;
+       return `${lines}`;
     }
 
 
@@ -65,8 +78,15 @@ const App = () => {
                 }} value={inputFormat}></textarea>
             </div>
             <div className="controls">
-                <button onClick={onConvertHandler}>Convert</button>
+                <div>
+                    <button onClick={onConvertHandler}>Convert</button>
+                    </div>
+                <div>
                 <button onClick={onClearHandler}>Clear</button>
+                </div>
+                <div>
+                <input type="file" onChange={onUploadHandler} name="Upload" />
+                </div>
             </div>
             <div className="input-format">
             <textarea value={outputFormat}></textarea>
